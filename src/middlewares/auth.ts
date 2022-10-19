@@ -28,19 +28,17 @@ export class AuthMiddleware extends Middleware {
                 return
             }
 
+            jwt.verify(token, process.env.TOKEN_SECRET, (err: any, user: any) => {
+                console.log(err)
+
+                if (err) return _res.sendStatus(403)
+
+                req.user = user
+
+                next()
+            })
         } catch (e) {
             console.log(e)
         }
-
-
-        jwt.verify(token, process.env.TOKEN_SECRET, (err: any, user: any) => {
-            console.log(err)
-
-            if (err) return _res.sendStatus(403)
-
-            req.user = user
-
-            next()
-        })
     }
 }
